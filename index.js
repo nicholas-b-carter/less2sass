@@ -11,12 +11,21 @@ Less2Sass.prototype.convert = function(file) {
   this.convertInterpolatedVariables()
       .convertVariables()
       .convertTildaStrings()
+      .convertExtends()
       .convertMixins()
       .includeMixins()
       .convertColourHelpers()
       .convertFileExtensions();
 
   return this.file;
+};
+
+Less2Sass.prototype.convertExtends = function() {
+  var extendsRegex = /&:extend(\W+[.#][^(;]*;)/gm;
+
+  this.file = this.file.replace(extendsRegex, '$1@extend $2');
+
+  return this;
 };
 
 Less2Sass.prototype.includeMixins = function() {
